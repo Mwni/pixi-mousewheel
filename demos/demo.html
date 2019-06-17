@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>pixi-mousewheel Demo</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.0.3/pixi.min.js"></script>
+	<script type="text/javascript" src="../dist/pixi-mousewheel.min.js"></script>
+<script type="text/javascript">
+
+</script>
+	<style type="text/css">
+		body,html{
+			font-family: 'Helvetica Neue', Helvetica, Arial;
+			background-color: #eee;
+			text-align: center;
+		}
+		canvas{
+			display: block;
+			margin: auto;
+		}
+		.controls > div{
+			display: inline-block;
+			margin: 20px 10px 0 10px;
+			vertical-align: middle;
+		}
+		.controls > div input,
+		.controls > div select{
+			font-size: 13pt;
+			padding: 3px;
+		}
+		.controls > div input[type=number]{
+			width: 50px;
+		}
+		.controls > div input[type=button]{
+			padding: 3px 8px;
+		}
+		.source{
+			margin: auto;
+			margin-top: 100px;
+			max-width: 800px;
+			text-align: left;
+		}
+		.source pre{
+			background-color: rgba(255,255,255,0.8);
+			padding: 15px;
+		}
+	</style>
+</head>
+<body>
+	<h1>pixi-mousewheel Demo</h1>
+	<div id="canvas-placeholder"></div>
+
+	<div class="source">
+		<pre>
+<span style='color:#800000; font-weight:bold; '>var</span> app <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Application<span style='color:#808030; '>(</span>
+	<span style='color:#800080; '>{</span> 
+		width<span style='color:#800080; '>:</span> <span style='color:#008c00; '>800</span><span style='color:#808030; '>,</span>
+		height<span style='color:#800080; '>:</span> <span style='color:#008c00; '>500</span><span style='color:#808030; '>,</span>
+		antialias<span style='color:#800080; '>:</span> <span style='color:#0f4d75; '>true</span><span style='color:#808030; '>,</span>
+		backgroundColor<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xffffff</span>
+	<span style='color:#800080; '>}</span>
+<span style='color:#808030; '>)</span>
+document<span style='color:#808030; '>.</span>getElementById<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>canvas-placeholder</span><span style='color:#800000; '>'</span><span style='color:#808030; '>)</span><span style='color:#808030; '>.</span>appendChild<span style='color:#808030; '>(</span>app<span style='color:#808030; '>.</span>view<span style='color:#808030; '>)</span>
+
+<span style='color:#800000; font-weight:bold; '>var</span> container <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Container<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+container<span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#008c00; '>400</span>
+container<span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#008c00; '>250</span>
+app<span style='color:#808030; '>.</span>stage<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>container<span style='color:#808030; '>)</span>
+
+<span style='color:#800000; font-weight:bold; '>var</span> background <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Graphics<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+background<span style='color:#808030; '>.</span>beginFill<span style='color:#808030; '>(</span><span style='color:#008000; '>0x323232</span><span style='color:#808030; '>)</span>
+background<span style='color:#808030; '>.</span>drawRect<span style='color:#808030; '>(</span><span style='color:#808030; '>-</span><span style='color:#008c00; '>200</span><span style='color:#808030; '>,</span><span style='color:#808030; '>-</span><span style='color:#008c00; '>100</span><span style='color:#808030; '>,</span><span style='color:#008c00; '>400</span><span style='color:#808030; '>,</span><span style='color:#008c00; '>200</span><span style='color:#808030; '>)</span>
+container<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>background<span style='color:#808030; '>)</span>
+
+<span style='color:#800000; font-weight:bold; '>var</span> text <span style='color:#808030; '>=</span> <span style='color:#800000; font-weight:bold; '>new</span> PIXI<span style='color:#808030; '>.</span>Text<span style='color:#808030; '>(</span>
+	<span style='color:#800000; '>'</span><span style='color:#0000e6; '>This is a scrollable text.</span><span style='color:#0f69ff; '>\n</span><span style='color:#0f69ff; '>\n</span><span style='color:#800000; '>'</span>
+	<span style='color:#808030; '>+</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>It merely demonstrates how the mousewheel events could be used.</span><span style='color:#0f69ff; '>\n</span><span style='color:#0f69ff; '>\n</span><span style='color:#800000; '>'</span>
+	<span style='color:#808030; '>+</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Notice it only scrolls if the cursor is inside the black box.</span><span style='color:#0f69ff; '>\n</span><span style='color:#0f69ff; '>\n</span><span style='color:#800000; '>'</span>
+	<span style='color:#808030; '>+</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Document scrolling is being blocked when scrolling on an active pixi display-object.</span><span style='color:#0f69ff; '>\n</span><span style='color:#0f69ff; '>\n</span><span style='color:#800000; '>'</span>
+	<span style='color:#808030; '>,</span>
+	<span style='color:#800080; '>{</span>
+		fontFamily<span style='color:#800080; '>:</span> <span style='color:#800000; '>'</span><span style='color:#0000e6; '>Arial</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span>
+		fontSize<span style='color:#800080; '>:</span> <span style='color:#008c00; '>28</span><span style='color:#808030; '>,</span>
+		fill<span style='color:#800080; '>:</span> <span style='color:#008000; '>0xffffff</span><span style='color:#808030; '>,</span>
+		wordWrap<span style='color:#800080; '>:</span> <span style='color:#0f4d75; '>true</span><span style='color:#808030; '>,</span>
+		wordWrapWidth<span style='color:#800080; '>:</span> <span style='color:#008c00; '>360</span>
+	<span style='color:#800080; '>}</span>
+<span style='color:#808030; '>)</span>
+text<span style='color:#808030; '>.</span>x <span style='color:#808030; '>=</span> <span style='color:#808030; '>-</span><span style='color:#008c00; '>180</span>
+text<span style='color:#808030; '>.</span>y <span style='color:#808030; '>=</span> <span style='color:#808030; '>-</span><span style='color:#008c00; '>80</span>
+container<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>text<span style='color:#808030; '>)</span>
+
+text<span style='color:#808030; '>.</span>mask <span style='color:#808030; '>=</span> background<span style='color:#808030; '>.</span>clone<span style='color:#808030; '>(</span><span style='color:#808030; '>)</span>
+container<span style='color:#808030; '>.</span>addChild<span style='color:#808030; '>(</span>text<span style='color:#808030; '>.</span>mask<span style='color:#808030; '>)</span>
+
+
+<span style='color:#696969; '>// THE ACTUAL USE CASE ---------------</span>
+
+container<span style='color:#808030; '>.</span>interactiveMousewheel <span style='color:#808030; '>=</span> <span style='color:#0f4d75; '>true</span>
+container<span style='color:#808030; '>.</span>on<span style='color:#808030; '>(</span><span style='color:#800000; '>'</span><span style='color:#0000e6; '>mousewheel</span><span style='color:#800000; '>'</span><span style='color:#808030; '>,</span><span style='color:#808030; '>(</span>delta<span style='color:#808030; '>,</span>event<span style='color:#808030; '>)</span><span style='color:#808030; '>=</span><span style='color:#808030; '>></span><span style='color:#800080; '>{</span>
+	text<span style='color:#808030; '>.</span>y <span style='color:#808030; '>+=</span> delta<span style='color:#808030; '>*</span><span style='color:#008c00; '>50</span>
+<span style='color:#800080; '>}</span><span style='color:#808030; '>)</span>
+		</pre>
+	</div>
+</body>
+
+<script type="text/javascript">
+
+var app = new PIXI.Application(
+	{ 
+		width: 800,
+		height: 500,
+		antialias: true,
+		backgroundColor: 0xffffff
+	}
+)
+document.getElementById('canvas-placeholder').appendChild(app.view)
+
+var container = new PIXI.Container()
+container.x = 400
+container.y = 250
+app.stage.addChild(container)
+
+var background = new PIXI.Graphics()
+background.beginFill(0x323232)
+background.drawRect(-200,-100,400,200)
+container.addChild(background)
+
+var text = new PIXI.Text(
+	'This is a scrollable text.\n\n'
+	+ 'It merely demonstrates how the mousewheel events could be used.\n\n'
+	+ 'Notice it only scrolls if the cursor is inside the black box.\n\n'
+	+ 'Document scrolling is being blocked when scrolling on an active pixi display-object.\n\n'
+	,
+	{
+		fontFamily: 'Arial',
+		fontSize: 28,
+		fill: 0xffffff,
+		wordWrap: true,
+		wordWrapWidth: 360
+	}
+)
+text.x = -180
+text.y = -80
+container.addChild(text)
+
+text.mask = background.clone()
+container.addChild(text.mask)
+
+
+// THE ACTUAL USE CASE ---------------
+
+container.interactiveMousewheel = true
+container.on('mousewheel',(delta,event)=>{
+	text.y += delta*50
+})
+
+</script>
+</html>
