@@ -5,7 +5,7 @@
 This plugin for pixi.js automatically dispatches mousewheel scroll events for pixi display-objects. It only fires the event for objects that are interactive and have a special flag set. When scrolling a said display-object, the default document scroll is being blocked. Additionally, it normalizes the mousewheel delta for cross-browser consistency.
 
 ## Demo
-[Simple text scroll usage example](http://manuelotto.com/opensource/pixi-mousewheel/demos/demo.html)
+[Simple text scroll usage example](https://mwni.io/opensource/pixi-mousewheel/demos/demo.html)
 
 ## Documentation
 To enable mousewheel events for any display-object, set the `interactiveMousewheel` flag on it to `true`.
