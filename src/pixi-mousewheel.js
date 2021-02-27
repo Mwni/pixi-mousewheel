@@ -44,7 +44,6 @@ class MousewheelPlugin{
 
 
 
-
 Object.defineProperty(PIXI.DisplayObject.prototype, 'interactiveMousewheel', {
 	get: function(){
 		return this._interactiveMousewheel
